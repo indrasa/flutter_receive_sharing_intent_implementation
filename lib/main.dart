@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_receive_sharing_intent_implementation/AdaIntent.dart';
+import 'package:flutter_receive_sharing_intent_implementation/TidakAdaIntent.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 void main() {
@@ -35,6 +37,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late StreamSubscription _intentSub;
   final _sharedFiles = <SharedMediaFile>[];
+  String? sharedTextYangDidapatkanDariIntent;
 
   @override
   void initState() {
@@ -77,26 +80,17 @@ class _MyHomePageState extends State<MyHomePage> {
     for (var x in _sharedFiles) {
       print("hasilnya adalah");
       print(x.path);
+      sharedTextYangDidapatkanDariIntent = x.path;
     }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            const Text("intent diterima: "),
-            Text(_sharedFiles
-                .map((f) => f.toMap())
-                .join(",\n****************\n")),
-          ],
-        ),
-      ),
+      body: sharedTextYangDidapatkanDariIntent == null
+          ? const Tidakadaintent()
+          : Adaintent(sharedText: sharedTextYangDidapatkanDariIntent!),
     );
   }
 }
